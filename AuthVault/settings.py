@@ -129,3 +129,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Media files (uploads/images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+
+# Add this near the top with other middleware
+MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+# At bottom of settings.py
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
