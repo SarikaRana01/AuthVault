@@ -36,7 +36,7 @@ def show_dashboard(request):
     context = {
        "user":user, "entries": entries, "show_passwords": show_passwords,"totalEntries":totalEntries,"uniqueEntries":uniqueEntries,"lastEntry": lastEntry.created_at if lastEntry else None
     }
-    return render(request, "Dashboard/dashBoardPage.html", context)
+    return render(request, "Dashboard/dashboardPage.html", context)
 
 # def show_dashboard(request):
 #     user=SignUpModel.objects.filter(user=request.user)
@@ -117,16 +117,3 @@ def delete_credential(request, pk):
 
 
 
-def view_password(request, credential_id):
-    if request.method == 'POST':
-        pin = request.POST.get('pin')
-        user = SignUpModel.objects.get(user=request.user)
-
-        if pin == user.pin:
-            vault = Vault.objects.get(id=credential_id, user=user)
-            decrypted_password = decrypt_password(vault.encrypted_password)
-            return JsonResponse({'password': decrypted_password})
-        else:
-            return JsonResponse({'error': 'Invalid PIN'}, status=403)
-
-    return JsonResponse({'error': 'Invalid request'}, status=400)
