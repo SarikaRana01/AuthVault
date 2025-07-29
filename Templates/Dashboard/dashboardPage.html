@@ -1,0 +1,256 @@
+
+{% extends 'Home/base.html' %}
+{% block content %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+  <nav class="navbar px-4 py-1 d-flex justify-content-between align-items-center" style="background-color: #101922; box-shadow: 0 0 10px #00f7ff33;">
+ 
+  <!-- logo -->
+   <div class="logo-section">
+    <div class="logo-glow-container">
+      <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" alt="AuthVault Logo">
+    </div>
+    <div class="logo-title">AuthVault</div>
+    <!-- <div class="tagline">Secure. Encrypt. Empower.</div> -->
+  </div>
+
+
+  <ul class="nav">
+    <li class="nav-item"><a class="nav-link text-light" href="#" >Dashboard</a></li>
+    <li class="nav-item mx-2"><a href="{% url 'add' %}" class="btn btn-add" >Add</a></li>
+    <li class="nav-item">
+          <a href="{% url 'logout' %}" class="btn btn-logout" > Logout</a></li>
+  </ul>
+</nav>
+
+  <div class="dashboard-container my-3">
+    <div class="right-panel m" >
+
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <h1 style="color: #00f7ff;font-size: 2.3rem;">Welcome  <b style="color: white;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-size: 2.5rem;text-transform: uppercase;"> {{user.user}} </b> to your Encrypted Vault </h1>
+        </div> 
+    <p style="font-size: 18px;">Here is where you manage all your secure credentials.</p>
+       
+
+      <!-- Summary Cards -->
+      <div class="summary-cards">
+        <div class="summary-box">
+          <h4 id="displayEntries">0</h4>
+          <p>Vault Entries</p>
+        </div>
+        <div class="summary-box">
+              {% if lastEntry %}
+                  <h4 style="font-size: 1.2rem;margin-top: 5px;" >{{lastEntry}}</h4>
+              {% else %}
+                  <p>No entries yet</p>
+              {% endif %}
+              <p>Last Entry</p>
+
+        </div>
+        <div class="summary-box">
+          
+          <h4 id="UninqueEntries">0</h4>
+
+          <p>Unique Platforms</p>
+        </div>
+      </div>
+
+
+      <p id="showDetails" 
+     class="mt-2 px-3 py-2 text-light border rounded-3 shadow-sm bg-gradient"
+     style="display: none; background-color: #1e1e2f; font-family: 'Orbitron', sans-serif; font-size: 14px;">
+     
+     </p>
+
+
+      <!-- Credentials Table -->
+      <div class="credentials-list">
+        <table class="table table-dark table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Platform</th>
+              <th>Username</th>
+              <th>Password</th>
+              <th>View</th>
+              <th>Notes</th>
+              <th>Update</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+              <tbody>
+                {% for entry in entries %}
+                  <tr>
+                    <td>{{ entry.platform }}</td>
+                    <td>{{ entry.username }}</td>
+
+
+
+                    <!-- <td id="show-{{entry.id}}">••••••••</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="viewPassword('{{entry.id}}','{{entry.encrypted_password}}')" id="hide-{{entry.id}}">View</button></td>
+                    <td> -->
+
+                  <td id="show-{{ entry.id }}">
+                    {% if entry.id in show_passwords %}
+                          {% for key, value in show_passwords.items %}
+                              {% if key == entry.id %}
+                                  {{ value }} 
+                              {% endif %}
+                            {% endfor %}
+                    {% else %}
+                    ••••••••
+                    {% endif %}
+                  </td>
+
+                  <td>
+                    {% if entry.id in show_passwords %}
+                      <form method="POST" action="{% url 'show' %}">
+                        {% csrf_token %}
+                            <input type="hidden" name="entry_id" value="{{ entry.id }}">
+                            <button class="btn btn-secondary btn-sm" type="submit">Hide</button>
+                      </form>
+                    {% else %}
+                        <button class="btn btn-primary btn-sm" onclick="viewPassword(`{{ entry.id }}`)">View</button>
+                    {% endif %}
+                  </td>
+
+
+                      <!-- checking  -->
+                       <td>
+                  <button class="btn btn-light btn-sm " onclick="details( '{{entry.id}}','{{ entry.notes }}')" id="hideDetails-{{entry.id}}" >Note</button>
+                </td>
+                    <td><a href="{% url 'update' entry.id %}" class="btn btn-warning btn-sm" style="color: white;">Update</a></td>
+                    <td><a href="{% url 'delete' entry.id %}" class="btn btn-danger btn-sm">Delete</a></td>
+
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center">No entries found.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+        </table>
+
+
+
+
+<form id="pin-form" method="POST" style="display: none;">
+        {% csrf_token %}
+        <input type="hidden" name="entry_id" value="{{ entry.id }}" id="entry-id">
+        <input type="hidden" name="pin_entered" id="pin-entered">
+      </form>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+  <footer class="text-center py-3 mt-3" style="background-color: #101922; border-top: 1px solid #00f7ff33; color: #888; font-size: 0.9rem;">
+  <p class="mb-1">Made By @Sarika</p>
+  <p class="mb-0">© 2025 AuthVault. All rights reserved.</p>
+</footer>
+
+  <p>Total Entries: <span id="counter">0</span></p>
+
+
+
+<script>
+
+
+ 
+function viewPassword(entryId) {
+    const pin = prompt("Enter your Vault PIN to view password:");
+    if (pin) {
+        document.getElementById("entry-id").value = entryId;
+        document.getElementById("pin-entered").value = pin;
+        document.getElementById("pin-form").submit();
+    }
+}
+
+
+
+
+
+
+function details(id,notes){
+   const show = document.getElementById("showDetails");
+   const hide = document.getElementById(`hideDetails-${id}`);
+    
+    if (show.style.display === "none" || show.innerText === "") {
+        show.innerText = notes || "No notes added.";
+        hide.innerText="Hide";
+        show.style.display = "block";
+    } else {
+        show.style.display ="None"; 
+        hide.innerText="Note"
+        show.innerText=""    
+     }
+
+
+}
+
+
+function animateCount1(finalValue, speed) {
+     if(finalValue==0) return;
+      let current = 0;
+      const counter = document.getElementById('displayEntries');
+      const interval = setInterval(() => {
+        current++;
+        counter.innerText = current;
+        if (current === finalValue) {
+          clearInterval(interval);
+        }
+      }, speed);
+    }
+
+
+    
+function animateCount2(finalValue, speed) {
+      if(finalValue==0) return;
+      let current = 0;
+      const counter = document.getElementById('UninqueEntries');
+      const interval = setInterval(() => {
+        current++;
+        counter.innerText = current;
+        if (current === finalValue) {
+          clearInterval(interval);
+        }
+      }, speed);
+    }     var totalEntries=JSON.parse('{{ totalEntries }}'); 
+     var uniqueEntries=JSON.parse('{{ uniqueEntries }}'); 
+    window.onload=function(){
+      animateCount1(totalEntries, 300);
+      animateCount2(uniqueEntries, 300);
+    }
+
+
+  </script>
+
+
+
+
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+      

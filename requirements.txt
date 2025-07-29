@@ -1,0 +1,13 @@
+asgiref==3.9.1
+cffi==1.17.1
+cryptocurrency==1.0
+cryptography==45.0.5
+dj-database-url==3.0.1
+Django==4.2.2
+gunicorn==23.0.0
+packaging==25.0
+pycparser==2.22
+python-decouple==3.8
+sqlparse==0.5.3
+tzdata==2025.2
+whitenoise==6.9.0

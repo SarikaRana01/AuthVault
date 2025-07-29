@@ -1,0 +1,50 @@
+{% extends 'Home/base.html' %}
+{% block content %}
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg" >
+    <div class="container-fluid">
+      <!-- logo -->
+
+   <div class="logo-section">
+    <div class="logo-glow-container">
+      <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" alt="AuthVault Logo">
+    </div>
+    <div class="logo-title">AuthVault</div>
+    <!-- <div class="tagline">Secure. Encrypt. Empower.</div> -->
+  </div>
+      <div class="collapse navbar-collapse justify-content-end">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-container" style="width: 100%;">
+    <div class="auth-card">
+      <h2 class="auth-title">Control Panel</h2>
+
+      <button class="btn-control">🔒 Encrypt All Passwords</button>
+      <button class="btn-control">🔓 Decrypt Vault</button>
+      <button class="btn-control">🔄 Sync with Cloud</button>
+      <button class="btn-control">🧹 Clear Temporary Keys</button>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    &copy; 2025 AuthVault. All rights reserved.
+  </footer>
+
+</body>
+</html>
+
+
+    {% endblock content %}

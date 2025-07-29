@@ -1,0 +1,35 @@
+{% extends 'Home/base.html' %}
+{% block content %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-4" style="height: 67px;">
+  <div class="logo-section">
+    <div class="logo-glow-container">
+      <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" alt="AuthVault Logo">
+    </div>
+    <div class="logo-title">AuthVault</div>
+  </div>
+  <div class="ms-auto">
+    <a href="#" class="btn btn-sm btn-logout">Logout</a>
+  </div>
+</nav>
+
+<!-- Main Delete Card -->
+<div class="auth-card text-center">
+  <h2 class="mb-4">Delete Credential</h2>
+  <p class="mb-4">Are you sure you want to permanently delete the credentials for:</p>
+  <h4 class="mb-4 text-danger">{{ object.platform }} — {{ object.username }}</h4>
+
+  <form method="POST" action="{% url 'delete' form.instance.id %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger w-100 mb-2">Yes, Delete</button>
+    <a href="{% url 'show' %}" class="btn btn-secondary w-100">Cancel</a>
+  </form>
+</div>
+
+<!-- Footer -->
+<footer>
+  &copy; 2025 AuthVault. Built for Secure Digital Life.
+</footer>
+
+{% endblock content %}

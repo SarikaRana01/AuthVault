@@ -1,0 +1,140 @@
+  {% extends 'Home/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg px-4">
+  <div class="logo-section">
+    <div class="logo-glow-container">
+      <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" alt="AuthVault Logo">
+    </div>
+    <div class="logo-title">AuthVault</div>
+  </div>
+</nav> 
+
+<div class="container-fluid mt-3">
+  <div class="row align-items-center">
+    <!-- Floating Image -->
+    <div class="col-md-6 text-center">
+      
+      <img src="{% static 'images/lock_img.png'  %}"  alt="Secure Lock"  height="500" width="500" class="floating-img spinning-logo">
+    </div>
+
+    <!-- Form Section -->
+    <div class="col-md-6">
+      <div class="auth-card">
+        <h2 class="auth-title">Create Secure Account</h2>
+
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+
+
+
+<form method="POST" action="{% url 'signUp' %}">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input type="text" name="username" class="form-control" id="username"
+           placeholder="Choose a unique username"
+           value="{{ form.username.value|default:'' }}" required />
+    {% for error in form.username.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" name="email" class="form-control" id="email"
+           placeholder="Your email address"
+           value="{{ form.email.value|default:'' }}" required />
+    {% for error in form.email.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <div class="mb-3">
+    <label for="pin" class="form-label">PIN (6–8 digit)</label>
+    <input type="password" name="pin" class="form-control" id="pin"
+           placeholder="Set your PIN for unlocking passwords" required />
+     {% for error in form.password.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div> 
+  <div class="mb-3">
+    <label for="pin" class="form-label">PIN (6–8 digit)</label>
+    <input type="password" name="confirm_pin" class="form-control" id="pin"
+           placeholder="Confirm Pin" required />
+     {% for error in form.password.errors %}
+      <div class="text-danger small">{{ error }}</div>
+    {% endfor %}
+  </div>
+
+  <button type="submit" class="btn btn-submit w-100">Create Account</button>
+
+  <div class="link-text mt-3">
+    <small>Already have an account? <a href="{% url 'login'  %}" class="text-info">Log in here</a></small>
+  </div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- <form method="POST" action="{% url 'signUp' %}">
+          {% csrf_token %}
+          
+          <div class="mb-3"> -->
+            <!-- <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" id="username" placeholder="Choose a unique username" required /> -->
+          <!-- </div> -->
+
+          <!-- <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Your email address" required /> -->
+          <!-- </div>
+
+          <div class="mb-3">
+            <label for="pin" class="form-label">PIN (4-6 digit)</label>
+            <input type="password" name="pin" class="form-control" id="pin" placeholder="Set your PIN for unlocking passwords" required />
+          </div>
+
+          <button type="submit" class="btn btn-submit w-100">Create Account</button>
+
+          <div class="link-text mt-3">
+            <small>Already have an account? <a href="{% url 'login' %}" class="text-info">Log in here</a></small>
+          </div>
+        </form> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  &copy; 2025 AuthVault. All rights reserved.
+</footer>
+
+{% endblock content %}

@@ -1,0 +1,77 @@
+{% extends 'Home/base.html' %}
+{% block content %}
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom px-4" style="height: 67px;">
+  <div class="logo-section">
+    <div class="logo-glow-container">
+      <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" alt="AuthVault Logo">
+    </div>
+    <div class="logo-title">AuthVault</div>
+  </div>
+  <div class="ms-auto" style="margin-right: 0px;">
+      <a href="{% url 'show' %}" class="btn btn-sm btn-logout" >Back</a>
+    </div>
+    <div class="">
+      <a href="{% url 'logout' %}" class="btn btn-sm btn-logout mx-5" >Logout</a>
+    </div>
+</nav>
+
+<!-- Main Form Card -->
+<div class="auth-card">
+  <h2>Update Encrypted Credential</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <form method="POST" action="{% url 'update' form.instance.id %}">
+    {% csrf_token %}
+
+    <!-- Platform Dropdown -->
+    <!-- Platform Dropdown -->
+<div class="mb-3">
+  <label for="platform" class="form-label">Select Platform</label>
+  <select id="platform" name="platform" class="form-select" readonly>
+    {% for name in platform_list %}
+       {% if form.platform.value == name %}
+       <option value="{{name}}">{{name}}</option>
+       {% endif %}
+    {% endfor %}
+  </select>
+</div>
+
+    <!-- Username Field -->
+    <div class="mb-3">
+      <label for="username" class="form-label">Platform Username</label>
+      <input type="text" class="form-control" id="username" name="username"
+             value="{{ form.username.value|default_if_none:'' }}" readonly>
+    </div>
+
+    <!-- Password Field -->
+    <div class="mb-3">
+      <label for="password" class="form-label">Platform Password</label>
+      <input type="password" class="form-control" id="password" name="encrypted_password"
+             placeholder="Enter your new password" required>
+    </div>
+
+    <!-- Notes Field -->
+    <div class="mb-3">
+      <label for="notes" class="form-label">Notes (Optional)</label>
+      <textarea class="form-control" id="notes" name="notes" rows="2"
+                placeholder="Update any additional info">{{ form.notes.value }}</textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-submit w-100">Update Info</button>
+  </form>
+</div>
+
+<!-- Footer -->
+<footer>
+  &copy; 2025 AuthVault. Built for Secure Digital Life.
+</footer>
+
+{% endblock content %}
