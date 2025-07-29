@@ -15,7 +15,7 @@ def signUp(request):
         confirm_pin=request.POST.get("confirm_pin")
         if confirm_pin!=pin:   
                 messages.error(request, "Pin not matched")
-                return render(request, 'accounts/signUpPage.html', {'form': form})
+                return render(request, 'Accounts/signUpPage.html', {'form': form})
         if not User.objects.filter(username=uname).exists() :
                                 user = User.objects.create_user(username=uname, email=email, password=pin)
                                 account=  SignUpModel.objects.create(user=user, email=email, pin=pin)
@@ -24,8 +24,8 @@ def signUp(request):
                                 return redirect('login')
         else:
                             messages.error(request, "Account already exitsts")
-                            return render(request, 'accounts/signUpPage.html', {'form': form})       
-    return render(request, 'accounts/signUpPage.html', {'form': form})
+                            return render(request, 'Accounts/signUpPage.html', {'form': form})       
+    return render(request, 'Accounts/signUpPage.html', {'form': form})
 
 
 
