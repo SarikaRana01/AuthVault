@@ -15,6 +15,4 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'AuthVault.settings')
 
 application = get_wsgi_application()
 
-import os
-os.system("python manage.py migrate --noinput")
-os.system("python manage.py collectstatic --noinput")
+
