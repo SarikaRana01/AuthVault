@@ -13,9 +13,6 @@ env/
 .env
 *.env
 
-# Static files collected by collectstatic
-staticfiles/
-
 # VS Code settings
 .vscode/
 
