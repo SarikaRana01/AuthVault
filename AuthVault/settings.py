@@ -14,7 +14,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 ENCRYPTION_KEY = config('ENCRYPTION_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['*']  
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
+# ALLOWED_HOSTS = ['*']  
 
 
 
@@ -131,8 +132,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
-# Add this near the top with other middleware
-MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
 
 # At bottom of settings.py
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
