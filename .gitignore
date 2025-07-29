@@ -1,0 +1,26 @@
+# Ignore Python cache files
+_pycache_/
+*.py[cod]
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore Django SQLite database
+*.sqlite3
+
+# Ignore environment variables
+.env
+*.env
+
+# Ignore static files collected for deployment
+staticfiles/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Render deploy folder (if used)
+build/
