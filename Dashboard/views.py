@@ -93,13 +93,26 @@ def update_credential(request, pk):
     if request.method == 'POST':
         form = VaultForm(request.POST, instance=credential)
         if form.is_valid():
-            form.save()
+            vault = form.save(commit=False)
+            vault.user = SignUpModel.objects.get(user=request.user)
+
+            raw_password = form.cleaned_data['encrypted_password']
+            vault.encrypted_password = encrypt_password(raw_password)
+
+            vault.save()
             messages.success(request, "Credentials Updated.")
             return redirect('show')  
     else:
         form = VaultForm(instance=credential)
 
-    platform_list = ["Facebook", "Instagram", "Twitter", "LinkedIn", "Email", "Others"]
+    platform_list = [
+            "Facebook", "Instagram", "Twitter (X)", "LinkedIn", "Snapchat",
+            "Pinterest", "Reddit", "Quora", "YouTube", "Telegram", "WhatsApp",
+            "Discord", "GitHub", "GitLab", "Bitbucket", "Gmail", "Yahoo Mail",
+            "Outlook", "ProtonMail", "Zoho Mail", "Amazon", "Flipkart", "Myntra",
+            "Snapdeal", "Netflix", "Hotstar (Disney+)", "Spotify", "Zoom",
+            "Slack", "Medium"
+        ]
     return render(request, 'Dashboard/updatePage.html', { 'form': form, 'platform_list': platform_list })
 
 
